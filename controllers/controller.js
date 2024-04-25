@@ -1,4 +1,4 @@
-const {User, UserDetail, postCategory, Post, Category} = require('../models');
+const {User, UserDetail, PostCategory, Post, Category} = require('../models');
 const bcrypt = require('bcryptjs');
 const session = require('express-session')
 
@@ -100,11 +100,15 @@ class Controller {
     static async postAddPost(req, res) {
         try {
             const {title, content, CategoryId} = req.body;
-            if (req.file.imageUrl){
-                const imageUrl = req.file;
+            console.log(req.file)
+            let imageUrl;
+            if (req.file){
+                imageUrl = `http://localhost:3000/images/${req.file.filename}`;
             }
-            console.log(title, content, CategoryId,imageUrl)
-            res.send(req.body);
+            const newPost = await Post.create({title, content, imageUrl});
+            const PostId = newPost.id
+            await PostCategory.create({PostId, CategoryId})
+            res.redirect('/homePage')
         } catch (error) {
             res.send(error)
         }
