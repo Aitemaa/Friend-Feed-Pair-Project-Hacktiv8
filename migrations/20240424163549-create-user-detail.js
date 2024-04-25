@@ -9,17 +9,27 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      fullName: {
-        type: Sequelize.STRING
-      },
       birthday: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       gender: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      status: {
+      bio: {
         type: Sequelize.STRING
+      },
+      UserId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        unique: true,
+        references: {
+          model: {
+            tableName: 'Users'
+          },
+          key: 'id',
+        }
       },
       createdAt: {
         allowNull: false,
