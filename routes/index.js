@@ -18,5 +18,6 @@ router.use(authMiddleware);
 router.get('/homePage', Controller.getHomePage);
 // bikin tombol add Post redirect ke '/homePage/addPost'
 router.get('/homePage/addPost', Controller.getAddPost);
+router.post('/homePage/addPost', Controller.postAddPost);
 
 module.exports = router;

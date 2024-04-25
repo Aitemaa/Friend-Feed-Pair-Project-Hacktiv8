@@ -4,8 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-</head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    </style>
+    </head>
 <body>
     <h1>FriendFeed</h1>
+    <button> <a href="/homePage/addPost">Add Post</a></button>
+    <table>
+        
+        <% data.forEach(e => { %>
+        <tr>
+            <td><%= e.title %></td>
+            <td><%= e.content %></td>
+            <td><%= e.imageUrl %></td>
+        </tr>
+            <% });  %>
+      </table>
 </body>
 </html>
