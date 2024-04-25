@@ -10,10 +10,15 @@
     <form action="" method="post" enctype="multipart/form-data">
         <label for="">Post Title</label>
         <input type="text" name="title">
-        <label for="">Post Content</label>
+        <label for="">Post Content</label><br>
         <textarea name="content" id="" cols="30" rows="10"></textarea>
         <label for="">Upload Image</label>
         <input type="file" name="imageUrl">
+        <select name="CategoryId" id="">
+            <% data.forEach((e) => { %>
+            <option value="<%= e.id %>"> <%= e.name %></option>
+            <% }); %>
+        </select>
         <button>Submit</button>
     </form>
 </body>

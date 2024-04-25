@@ -3,21 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lilita+One&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="signup.css">
     <title>Sign Up</title>
 </head>
 <body>
     <% if (errorQuery){ %>
         <p style="color: red;"><%=errorQuery%></p>
       <% } %>
-    <h3>Please fill form below to Sign up!</h3>  
-    <form action="" method="post">
-    <label for="">Username</label>
-    <input type="text" name="username"> <br> <br>
-    <label for="">Email</label>
-    <input type="email" name="email"> <br> <br>
-    <label for="">Password</label>
-    <input type="password" name="password" > <br> <br>
-    <button>Sign Up</button>
-    </form>
+      <div class="container">
+        <h2>Sign Up</h2>  
+        <p>Create Your Account</p>
+        <form action="" method="post">
+            <div class="input-container">
+                <img src="sign-up-icon/user.png" alt="" srcset="">
+                <input type="text" name="username" placeholder="Username" class="input input-text"> 
+            </div>
+            <div class="input-container">
+                <img src="sign-up-icon/email.png" alt="" srcset="">
+                <input type="email" name="email" placeholder="Email" class="input input-text"> 
+            </div>
+            <div class="input-container">
+                <img src="sign-up-icon/padlock.png" alt="" srcset="">
+                <input type="password" name="password" placeholder="Password" class="input input-text"> 
+            </div>
+        <button id="sign-btn">Sign Up</button>
+        <p class="bot-text"> Already have an account? <a href="/loginPage"> Login</a> </p>
+        </form>
+      </div>
+
 </body>
 </html>
