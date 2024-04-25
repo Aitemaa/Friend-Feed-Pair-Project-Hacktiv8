@@ -47,22 +47,22 @@ class Controller {
         }
     }
     
-        static async postLoginPage(req, res) {
-            try {
-                const {email, password} = req.body;
-                const user = await User.findOne({
-                    where: {email}
-                });
+    static async postLoginPage(req, res) {
+         try {
+            const {email, password} = req.body;
+            const user = await User.findOne({
+                 where: {email}
+              });
                 
 
-                const error = 'Invalid Username/Password';
+            const error = 'Invalid Username/Password';
                 if (!user) {
-                    return res.redirect(`/loginPage?error=${error}`)
+                 return res.redirect(`/loginPage?error=${error}`)
                 }
                 
-                const validatePassword = bcrypt.compareSync(password, user.password);
+            const validatePassword = bcrypt.compareSync(password, user.password);
                 if (!validatePassword){
-                    return res.redirect(`/loginPage?error=${error}`)
+                 return res.redirect(`/loginPage?error=${error}`)
                 }                
                 req.session.user = user.toJSON();
                 res.redirect('/homePage')
@@ -90,7 +90,7 @@ class Controller {
 
     static async getAddPost(req, res) {
         try {
-            const data = Category.findAll();
+            const data = await Category.findAll();
             res.render('AddPost', {data})
         } catch (error) {
             res.send(error)
@@ -98,6 +98,27 @@ class Controller {
     }
 
     static async postAddPost(req, res) {
+        try {
+            const {title, content, CategoryId} = req.body;
+            if (req.file.imageUrl){
+                const imageUrl = req.file;
+            }
+            console.log(title, content, CategoryId,imageUrl)
+            res.send(req.body);
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async adminPage(req, res) {
+        try {
+            res.render('adminPage')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async deleteAdminPage(req, res) {
         try {
             res.send(req.body);
         } catch (error) {

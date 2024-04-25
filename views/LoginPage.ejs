@@ -4,23 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <link rel="stylesheet" href="signup.css">
 </head>
 <body>
-    <h1>Welcome to FriendFeed</h1>
-    <h2>Login Form</h2>
-    <% if (errorQuery){ %>
-        <p style="color: red;"><%=errorQuery%></p>
-      <% } %>
-    <form action="" method="post">
-        <label for="">Email</label>
-        <input type="email" name="email">
-        <br><br>
-        <label for="">Password</label>
-        <input type="password" name="password" >
-        <br><br>
-        <button>Log In</button>
-        </form>
-
-    <p>Dont have an account? <a href="/signupPage">Sign Up</a></p>
+    <div class="container">
+        <h1>Welcome to FriendFeed</h1>
+        <h2>Login Form</h2>
+        <% if (errorQuery){ %>
+            <p style="color: red;"><%=errorQuery%></p>
+          <% } %>
+        <form action="" method="post">
+            <div class="input-container">
+                <img src="sign-up-icon/email.png" alt="" srcset="">
+                <input type="email" name="email" placeholder="Email">
+            </div>
+            <div class="input-container">
+                <img src="sign-up-icon/padlock.png" alt="" srcset="">
+                <input type="password" name="password" placeholder="Password">
+            </div>
+            
+            <button class="sign-btn">Log In</button>
+            <p>Dont have an account? <a href="/signupPage">Sign Up</a></p>
+            </form>
+    </div>
 </body>
 </html>
