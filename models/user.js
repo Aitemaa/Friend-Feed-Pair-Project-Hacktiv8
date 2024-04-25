@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Post)
     }
   }
   User.init({
@@ -60,11 +60,17 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
     hooks: {
       beforeCreate: (instance, options) => {
-        var salt = bcrypt.genSaltSync(10);
-        var hash = bcrypt.hashSync(instance.password, salt);
+        let salt = bcrypt.genSaltSync(10);
+        let hash = bcrypt.hashSync(instance.password, salt);
+        instance.password = hash;
+      }, 
+      beforeBulkCreate: (instance, options) => {
+        let salt = bcrypt.genSaltSync(10);
+        let hash = bcrypt.hashSync(instance.password, salt);
         instance.password = hash;
       }
     }
+    
   });
   return User;
 };

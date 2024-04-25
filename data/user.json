@@ -1,0 +1,26 @@
+[ 
+    {
+        "username": "Andrian Edmund",
+        "email": "andrian@gmail.com",
+        "password": "andrian123",
+        "role": "user"
+    },
+    {
+        "username": "Bobby Albern",
+         "email": "bobby@gmail.com",
+         "password": "bobby456",
+         "role": "admin"
+    },
+    {
+        "username": "Cassandra Willow",
+        "email": "cassandra@gmail.com",
+        "password": "cassandra789",
+        "role": "user"
+    },
+    {
+        "username": "Diana Daniella",
+        "email": "diana@gmail.com",
+        "password": "diana101",
+        "role": "admin"
+    }
+]

@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center; 
     align-items: center; 
-    background-color: #012626;
+    background: linear-gradient(45deg, #49a09d, #5f2c82);
 }
 
 img {
