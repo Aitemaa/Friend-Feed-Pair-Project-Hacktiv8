@@ -13,7 +13,8 @@ class Controller {
 
     static getSignUpPage(req, res) {
         try {
-            res.render('signupForm');
+            const errorQuery = req.query.error;
+            res.render('signupForm', {errorQuery});
         } catch (error) {
             res.send(error)
         }
@@ -21,13 +22,19 @@ class Controller {
 
     static async postSignUpPage(req, res) {
         try {
-            const {username, email, password, birthday, gender} = req.body;
+            const {username, email, password} = req.body;
             const newUser = await User.create({username, email, password});
-            const UserId = newUser.id;
-            await UserDetail.create({birthday, gender, UserId})
             res.redirect('/loginPage')
         } catch (error) {
-            res.send(error)
+            console.log(req.body)
+            if (error.name === "SequelizeValidationError"){
+                let errorList = error.errors.map(e => {
+                    return e.message
+                });
+                res.redirect(`?error=${errorList}`)
+            } else {
+                res.send(error);
+            }
         }
     }
 
@@ -49,26 +56,33 @@ class Controller {
                 
 
                 const error = 'Invalid Username/Password';
-                // if (!user) {
-                //     return res.redirect(`/loginPage?error=${error}`)
-                // }
+                if (!user) {
+                    return res.redirect(`/loginPage?error=${error}`)
+                }
                 
                 const validatePassword = bcrypt.compareSync(password, user.password);
                 if (!validatePassword){
                     return res.redirect(`/loginPage?error=${error}`)
                 }                
-                req.session.user = await user;
+                req.session.user = user.toJSON();
                 res.redirect('/homePage')
-              
             } catch (error) {
-                res.send(error)
+                if (error.name === "SequelizeValidationError"){
+                    let errorList = error.errors.map(e => {
+                        return e.message
+                    });
+                    res.redirect(`?error=${errorList}`)
+                } else {
+                    res.send(error);
+                }
             }
         }
 
     static async getHomePage(req, res) {
         try {
-            res.send(req.session.user)
-            // res.render('homePage')
+            // res.send(req.session.user)
+            const data = await Post.findAll();
+            res.render('homePage', {data})
         } catch (error) {
             res.send(error)
         }
@@ -76,7 +90,16 @@ class Controller {
 
     static async getAddPost(req, res) {
         try {
-            res.render()
+            const data = Category.findAll();
+            res.render('AddPost', {data})
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async postAddPost(req, res) {
+        try {
+            res.send(req.body);
         } catch (error) {
             res.send(error)
         }

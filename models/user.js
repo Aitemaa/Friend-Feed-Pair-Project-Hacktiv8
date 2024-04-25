@@ -15,9 +15,45 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    username: {
+      type:DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Username cannot be empty'},
+        notEmpty: {msg: 'Username cannot be empty'},
+        len: {
+          args: [5,10],
+          msg: 'Username length must be between 5 and 10'
+        },
+      }
+    },
+    email: {
+      type:DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Email cannot be empty'},
+        notEmpty: {msg: 'Email cannot be empty'},
+        isEmail: {msg: 'Email form must be filled in Email format'},
+        async isUnique(value){
+          const existingUser = await User.findOne({ where: { email: value } });
+        if (existingUser){
+          throw new Error('Email already exists')
+          }
+        }
+      }
+    },
+    password: {
+      type:DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Password cannot be empty'},
+        notEmpty: {msg: 'Password cannot be empty'},
+        len: {
+          args: [8],
+          msg: 'Password length must be more than 8'
+        }
+      }
+    },
     role: DataTypes.STRING
   }, {
     sequelize,
