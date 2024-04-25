@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
+    <title>Admin Page</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" type="text/css" href="/adminpage.css">
+    
 </head>
 <body>
 
-<h2>Admin Page</h2>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Title</th>
+          <th>User</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach((e, i) => { %>
+        <tr>
+          <td>
+            <%= i+1 %>
+          </td>
+          <td>
+            <%= e.title %>
+          </td>
+          <td>
+            <%= e.User.username %>
+          </td>
+          <td>
+            <%= e.action %>
+            <a href="/adminPage/delete/<%= e.id %>"><button>Delete</button></a>
+          </td>
 
-<table>
-  <tr>
-    <th>No</th>
-    <th>Title</th>
-    <th>User</th>
-    <th>Action</th>
-  </tr>
-  <tr>
-    <td>
-    <a href="/adminPage/delete/:id"><button>Delete</button></a>
-</td>
-  </tr>
-</table>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>

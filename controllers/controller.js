@@ -80,9 +80,26 @@ class Controller {
 
     static async getHomePage(req, res) {
         try {
-            // res.send(req.session.user)
-            const data = await Post.findAll();
-            res.render('homePage', {data})
+            const data = await Post.findAll({
+                include: [
+                    {
+                        model: User,
+                    },
+                    {
+                        model: Category,
+                        through: {
+                            model: PostCategory,
+                        },
+                    },
+                ],
+            });
+
+            const user = await User.findByPk(req.session.user.id)
+
+            const categoryList = await Category.findAll();
+            // res.send(categoryList)
+
+            res.render('homePage', {data, user, categoryList})
         } catch (error) {
             res.send(error)
         }
@@ -100,12 +117,12 @@ class Controller {
     static async postAddPost(req, res) {
         try {
             const {title, content, CategoryId} = req.body;
-            console.log(req.file)
+            const UserId = req.session.user.id
             let imageUrl;
             if (req.file){
                 imageUrl = `http://localhost:3000/images/${req.file.filename}`;
             }
-            const newPost = await Post.create({title, content, imageUrl});
+            const newPost = await Post.create({title, content, imageUrl, UserId});
             const PostId = newPost.id
             await PostCategory.create({PostId, CategoryId})
             res.redirect('/homePage')
@@ -116,7 +133,10 @@ class Controller {
 
     static async adminPage(req, res) {
         try {
-            res.render('adminPage')
+            let data = await Post.findAll({
+                include: User
+            })
+            res.render('adminPage', {data});
         } catch (error) {
             res.send(error)
         }
@@ -124,7 +144,34 @@ class Controller {
 
     static async deleteAdminPage(req, res) {
         try {
-            res.send(req.body);
+            let id = req.params.id
+            const deletedData = await Post.findByPk(id);
+            await deletedData.destroy();
+            res.redirect('/adminPage')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async postUserDetails(req, res) {
+        try {
+            res.send(data);
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async getUserDetails(req, res) {
+        try {
+            res.send(data);
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async editPostUserDetails(req, res) {
+        try {
+            res.send(data);
         } catch (error) {
             res.send(error)
         }
