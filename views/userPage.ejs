@@ -44,6 +44,9 @@
                         <% } %>
                 <button class="btn btn-primary mb-2"><a href="/userdetails/editProfile" style="color: white;">Update Profile</a></button>
                 <button class="btn btn-primary  mb-2"><a href="/homePage" style="color: white;">Back to Home</a></button>
+                <% if (data.role === 'admin'){ %>
+                    <button class="btn btn-primary  mb-2"><a href="/adminPage" style="color: white;">Admin Page</a></button>
+                    <% } %>
                 <br>
             </div>
         </div>
