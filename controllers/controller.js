@@ -1,6 +1,7 @@
 const {User, UserDetail, PostCategory, Post, Category} = require('../models');
 const bcrypt = require('bcryptjs');
-const session = require('express-session')
+const session = require('express-session');
+const {Op} = require('sequelize')
 
 class Controller {
     static async getPage(req, res) {
@@ -23,10 +24,9 @@ class Controller {
     static async postSignUpPage(req, res) {
         try {
             const {username, email, password} = req.body;
-            const newUser = await User.create({username, email, password});
+            await User.create({username, email, password});
             res.redirect('/loginPage')
         } catch (error) {
-            console.log(req.body)
             if (error.name === "SequelizeValidationError"){
                 let errorList = error.errors.map(e => {
                     return e.message
@@ -78,24 +78,23 @@ class Controller {
             }
         }
 
+    static logout(req, res){
+        req.session.destroy(err => {
+            if (err){
+                res.send(err)
+            } else {
+                res.redirect('/loginPage')
+            }
+        })
+    }
+
     static async getHomePage(req, res) {
         try {
-            const data = await Post.findAll({
-                include: [
-                    {
-                        model: User,
-                    },
-                    {
-                        model: Category,
-                        through: {
-                            model: PostCategory,
-                        },
-                    },
-                ],
-            });
+            const search = req.query.search;
 
-            const user = await User.findByPk(req.session.user.id)
 
+            const data = await Post.getPostBySearch(search, User, Category, PostCategory)
+            const user = await User.findByPk(req.session.user.id);
             const categoryList = await Category.findAll();
             // res.send(categoryList)
 
@@ -131,6 +130,84 @@ class Controller {
         }
     }
 
+    static async getUserDetails(req, res) {
+        try {
+            const id = req.session.user.id;
+            const data = await User.findByPk(id, {
+                include: [
+                  {
+                    model: UserDetail
+                  },
+                  {
+                    model: Post,
+                    include: [
+                      {
+                        model: Category,
+                        through: { model: PostCategory }
+                      }
+                    ]
+                  }
+                ]
+              })
+            //   res.send(data)
+              res.render('userPage', {data})
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+
+    static async editUserForm(req, res){
+        try {
+            const UserId = req.session.user.id;
+            const data = await UserDetail.findOne({
+                where: { UserId }
+              });
+              res.render('editUserForm', {data})
+        } catch (error) {
+            res.send(error);
+        }
+    }
+
+    static async postEditUserForm(req, res){
+        try {
+            const {birthday, gender, bio} = req.body
+            const UserId = req.session.user.id;
+            const currentUser =  await User.findByPk(UserId, {
+                include:
+                  {
+                    model: UserDetail
+                  }
+              })
+        
+            if (currentUser.UserDetail){
+                const id = await currentUser.UserDetail.id;
+                const currentUserDetail = await UserDetail.findOne({ where: { id } });
+               
+                await currentUserDetail.update({birthday, gender, bio});
+            } else {
+                await UserDetail.create({birthday, gender, bio, UserId})
+            }
+            res.redirect('/userdetails')
+        } catch (error) {
+            res.send(error);
+        }
+    }
+
+
+    static async deletePostFromUser(req, res){
+        try {
+            const id = req.params.id;
+            const deletedData = await Post.findByPk(id);
+            await deletedData.destroy();
+            res.redirect('/userdetails')
+        } catch (error) {
+            res.send(error);
+        }
+  
+    }
+
+
     static async adminPage(req, res) {
         try {
             let data = await Post.findAll({
@@ -148,30 +225,6 @@ class Controller {
             const deletedData = await Post.findByPk(id);
             await deletedData.destroy();
             res.redirect('/adminPage')
-        } catch (error) {
-            res.send(error)
-        }
-    }
-
-    static async postUserDetails(req, res) {
-        try {
-            res.send(data);
-        } catch (error) {
-            res.send(error)
-        }
-    }
-
-    static async getUserDetails(req, res) {
-        try {
-            res.send(data);
-        } catch (error) {
-            res.send(error)
-        }
-    }
-
-    static async editPostUserDetails(req, res) {
-        try {
-            res.send(data);
         } catch (error) {
             res.send(error)
         }

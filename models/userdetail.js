@@ -11,6 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      UserDetail.belongsTo(models.User)
+    }
+
+    get age(){
+      const currentYear = new Date().getFullYear();
+      const userYear = this.birthday.getFullYear();
+      return currentYear - userYear;
     }
   }
   UserDetail.init({

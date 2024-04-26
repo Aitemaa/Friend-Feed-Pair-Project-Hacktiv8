@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>User Detail</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -23,35 +23,35 @@
     
     <nav class="navbar navbar-light bg-white">
         <a href="#" class="navbar-brand">Friend Feed</a>
-        <form class="form-inline" action="" method="get">
-            <div class="input-group">
-                <input name="search" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="submit" id="button-addon2">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
     </nav>
    
 <div class="container-fluid gedf-wrapper">
     <div class="row">
         <div class="col-md-3">
             <div class="card">
-                <div class="card-body mb-4">
-                    <div class="h5"><%=user.username%></div>
-                    <div class="h7 text-muted"><%=user.email%></div>
+                <div class="card-body">
+                    <div class="h5"><%=data.username%></div>
+                    <div class="h7 text-muted"><%=data.email%></div>
                 </div>
-                <button class="btn btn-primary mb-2"><a href="/homePage/addPost" style="color: white;">Add Post</a></button>
-                <button class="btn btn-primary mb-2"><a href="/userdetails" style="color: white;">Profile Settings</a></button>
-                <button class="btn btn-primary mb-2"><a href="/logout" style="color: white;">Logout</a></button>
+                <% if (data.UserDetail) { %>
+                    <p>Age: <%= data.UserDetail.age %> Years old</p>
+                    <p>Gender: <%= data.UserDetail.gender%></p>
+                    <p>Bio: <%= data.UserDetail.bio%></p>
+                    <% } else { %>
+                        <p>Age: You haven't updated your date of birth yet.</p>
+                        <p>Gender: You haven't updated your gender yet.</p>
+                        <p>Bio:You haven't updated your bio yet.</p>
+                        <% } %>
+                <button class="btn btn-primary mb-2"><a href="/userdetails/editProfile" style="color: white;">Update Profile</a></button>
+                <button class="btn btn-primary  mb-2"><a href="/homePage" style="color: white;">Back to Home</a></button>
+                <br>
             </div>
         </div>
         <div class="col-md-6 gedf-main">
 
+            
          
-                <% data.forEach(e => { %> 
+                <% data.Posts.forEach(e => { %> 
              
                     <div class="card gedf-card">
                         <div class="card-header">
@@ -61,15 +61,15 @@
                                         <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                     </div>
                                     <div class="ml-2">
-                                        <div class="h5 m-0"><%= e.User.username %></div>
+                                        <div class="h5 m-0"><%= data.username %></div>
                                         <div class="h7 text-muted"></div>
                                     </div>
                                 </div>
                                 <div>
                                     <div style="white-space: normal;"></div>
-                                    <% e.Categories.forEach(category => { %>
-                                        <%= category.name %>
-                                    <% });  %>
+                    
+                                        <%= e.Categories[0].name %>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -83,9 +83,12 @@
                                 <%= e.content %>
                             </p>
                         </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                            <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <div>
+                                <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                                <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                            </div>
+                            <a href="/userdetails/deletePost/<%=e.id%>" class="card-link">Delete Post</a>
                         </div>
                     </div>
                 <% });  %>
@@ -111,6 +114,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -10,26 +10,27 @@
     <title>Sign Up</title>
 </head>
 <body>
-    <% if (errorQuery){ %>
-        <p style="color: white;"><%=errorQuery%></p>
-      <% } %>
+
       <div class="container">
+        <% if (errorQuery){ %>
+            <p style="color: white;"><%=errorQuery%></p>
+          <% } %>
         <h2>Sign Up</h2>  
         <p>Create Your Account</p>
         <form action="" method="post">
             <div class="input-container">
                 <img src="sign-up-icon/user.png" alt="" srcset="">
-                <input type="text" name="username" placeholder="Username" class="input input-text"> 
+                <input type="text" name="username" placeholder="Username" class="input"> 
             </div>
             <div class="input-container">
                 <img src="sign-up-icon/email.png" alt="" srcset="">
-                <input type="email" name="email" placeholder="Email"  class="inpu input-emailil"> 
+                <input type="email" name="email" placeholder="Email"  class="input"> 
             </div>
             <div class="input-container">
                 <img src="sign-up-icon/padlock.png" alt="" srcset="">
-                <input type="password" name="password" placeholder="Password" class="input input-passwordword"> 
+                <input type="password" name="password" placeholder="Password" class="input "> 
             </div>
-        <button id="sign-btn">Sign Up</button>
+        <button id="sign-btn" style="margin-left: 20px;">Sign Up</button>
         <p class="bot-text"> Already have an account? <a href="/loginPage"> Login</a> </p>
         </form>
       </div>
